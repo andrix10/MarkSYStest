@@ -148,7 +148,7 @@ class CsvFile
         foreach ($header as $key) {
             $result[] = CsvCell::createCell(1, $count++, $key);
         }
-        
+
         $this->headerRow = $result;
     }
 
@@ -164,11 +164,13 @@ class CsvFile
 
     public function setCellRows()
     {   
+        $skipCell = $this->cells;
         $count = 0;
         $rows = [];
 
-        foreach($this->cells as $i) {
-            $rows[$count++] = str_getcsv($i->getValue(),';');
+        while($skipCell->next()){ 
+            $current = $skipCell->current();
+            $rows[$count++] = str_getcsv($current->getValue(),';');
         }
 
         $this->cellRows = $rows;
