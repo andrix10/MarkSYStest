@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List CSV Files{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col"><a href="{{ path('upload_file') }}">Upload new file</a></div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <ul>
+                    {% for file in files %}
+                        <li>
+                            <a href="{{ path('view_file', {'uuid': file.uuid}) }}">{{ file.name }} ({{ file.uploadDate|date('m/d/Y h:i:s T') }})</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

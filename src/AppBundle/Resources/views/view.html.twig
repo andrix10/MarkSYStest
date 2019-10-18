@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}View CSV File{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h2>{{ file.name }}</h2>
+            </div>
+            <div class="col">
+                <h3>Uploaded: {{ file.uploadDate|date('m/d/Y h:i:s T') }}</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        {% for header in file.getHeaderRow() %}
+                            <th>{{ header.value }}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for row in file.getCellRows() %}
+                        <tr>
+                        {% for cell in row %}
+                            <td>{{ cell }}</td>
+                        {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
