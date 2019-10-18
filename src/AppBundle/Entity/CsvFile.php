@@ -139,13 +139,17 @@ class CsvFile
 
     public function setHeaderRow()
     {
-        $headers = [];
+        $headers = $this->cells->get(0);
+        $header = [];
+        $result = [];
+        $count = 0;
 
-        foreach (StaticData::getSampleHeader() as $key => $header) {
-            $headers[] = CsvCell::createCell(1, $key, $header);
+        $header = str_getcsv($headers->getValue(),';');
+        foreach ($header as $key) {
+            $result[] = CsvCell::createCell(1, $count++, $key);
         }
-
-        $this->headerRow = $headers;
+        
+        $this->headerRow = $result;
     }
 
     public function getHeaderRow()
@@ -159,12 +163,15 @@ class CsvFile
     }
 
     public function setCellRows()
-    {
+    {   
+        $count = 0;
         $rows = [];
-        for ($i = 2; $i < 12; $i++) {
-            $rows[$i] = StaticData::getSampleRow();
+
+        foreach($this->cells as $i) {
+            $rows[$count++] = str_getcsv($i->getValue(),';');
         }
 
         $this->cellRows = $rows;
+        
     }
 }
