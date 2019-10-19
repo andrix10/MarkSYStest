@@ -139,17 +139,18 @@ class CsvFile
 
     public function setHeaderRow()
     {
-        $headers = $this->cells->get(0);
-        $header = [];
+        $header = $this->cells->current();
         $result = [];
         $count = 0;
 
-        $header = str_getcsv($headers->getValue(),';');
-        foreach ($header as $key) {
-            $result[] = CsvCell::createCell(1, $count++, $key);
+
+        while($header->getRow() == 1){
+            $result[] = CsvCell::createCell(1, $count, $header->getValue() );
+            $header = $this->cells->next();
         }
 
         $this->headerRow = $result;
+
     }
 
     public function getHeaderRow()
@@ -165,15 +166,45 @@ class CsvFile
     public function setCellRows()
     {   
         $skipCell = $this->cells;
-        $count = 0;
+        $skipCell->first();
         $rows = [];
+        $count = 0;
+        $count2 = 0;
+        $rows2 = [];
+        $rowCount = 2;
 
-        while($skipCell->next()){ 
-            $current = $skipCell->current();
-            $rows[$count++] = str_getcsv($current->getValue(),';');
+        foreach($skipCell as $current){
+            if($current->getRow() == $rowCount){
+                $rows[$count++] = $current->getValue();
+            }
+            else if($current->getRow() > $rowCount){
+                $rows2[$count2++] = $rows;
+                $rows = [];
+                $rowCount++;
+                $count = 0;
+                $rows[$count++] = $current->getValue();
+            }
         }
+        // while(true){
+        //     $rows = [];
+        //     $count = 0;
+        //     $skipCell->first();
+        //     $skipCell->next();
+        //     while($skipCell->next()){
+        //         $current = $skipCell->current();
+        //         if($current->getCol() == $colCount && $count < $max){
+        //             $rows[$count++] = $current->getValue();
+        //         }
+        //     }
+        //     $rows2[$count2++] = $rows;
+        //     $colCount++;
+        //     if($count2 == $max) break;
+        // }
 
-        $this->cellRows = $rows;
+
+       // $rows2 =$rows;
+
+        $this->cellRows = $rows2;
         
     }
 }

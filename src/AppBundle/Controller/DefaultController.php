@@ -44,11 +44,13 @@ class DefaultController extends Controller
                 $rowKey = 1;
                 $csvFile = new CsvFile();
                 $csvFile->setName($model->getFile()->getClientOriginalName());
-                while (($row = fgetcsv($handle, 0, ",")) !== false) {
+                while (($row = fgetcsv($handle, 0,";")) !== false) {
                     foreach ($row as $cellKey => $cellValue) {
                         $csvFile->addCell(CsvCell::createCell($rowKey, $cellKey + 1, $cellValue));
+                        
                     }
                     $rowKey++;
+                    
                 }
                 fclose($handle);
 
