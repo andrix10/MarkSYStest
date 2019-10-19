@@ -141,11 +141,9 @@ class CsvFile
     {
         $header = $this->cells->current();
         $result = [];
-        $count = 0;
-
 
         while($header->getRow() == 1){
-            $result[] = CsvCell::createCell(1, $count, $header->getValue() );
+            $result[] = CsvCell::createCell(1, 0, $header->getValue() );
             $header = $this->cells->next();
         }
 
@@ -168,9 +166,9 @@ class CsvFile
         $skipCell = $this->cells;
         $skipCell->first();
         $rows = [];
+        $rows2 = [];
         $count = 0;
         $count2 = 0;
-        $rows2 = [];
         $rowCount = 2;
 
         foreach($skipCell as $current){
@@ -185,24 +183,6 @@ class CsvFile
                 $rows[$count++] = $current->getValue();
             }
         }
-        // while(true){
-        //     $rows = [];
-        //     $count = 0;
-        //     $skipCell->first();
-        //     $skipCell->next();
-        //     while($skipCell->next()){
-        //         $current = $skipCell->current();
-        //         if($current->getCol() == $colCount && $count < $max){
-        //             $rows[$count++] = $current->getValue();
-        //         }
-        //     }
-        //     $rows2[$count2++] = $rows;
-        //     $colCount++;
-        //     if($count2 == $max) break;
-        // }
-
-
-       // $rows2 =$rows;
 
         $this->cellRows = $rows2;
         
